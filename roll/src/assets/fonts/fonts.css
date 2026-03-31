@@ -1,0 +1,6 @@
+@font-face {
+    font-family: 'HSR'; /* Choose a name for your font family */
+    src: url('./zh-cn.ttf') format('truetype'); /* Path relative to this CSS file */
+    font-weight: normal;
+    font-style: normal;
+}

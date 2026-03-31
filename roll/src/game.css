@@ -1,0 +1,494 @@
+.game-root {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    background-color: #0f0f14 !important;
+    color: #f6f6f8 !important;
+    padding: 28px 20px;
+    box-sizing: border-box;
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
+    transition: background-color 1s ease;
+}
+
+.game-root.point-active {
+    background-color: #fef3c7 !important;
+    color: #111827 !important;
+}
+
+h1 {
+    color: inherit;
+}
+
+
+
+.top-bar {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.play-area {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.main-title {
+    font-family: 'HSR', sans-serif;
+    font-size: 72px;
+    margin: 8px 0 24px;
+}
+
+.points {
+    font-family: 'HSR', sans-serif;
+    font-size: 20px;
+    margin: 8px 0 24px;
+}
+
+
+.dice-row {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 18px;
+}
+
+.dice {
+    width: 140px;
+    height: 140px;
+    border-radius: 12px;
+    display: inline-grid;
+    place-items: center;
+    background: #111318;
+    color: #fff;
+    border: 2px solid rgba(255, 255, 255, 0.06);
+    cursor: pointer;
+    transition: transform 0.18s ease;
+}
+
+.game-root.point-active .dice {
+    background: rgba(255, 255, 255, 0.88);
+    color: #111827;
+}
+
+.dice:active {
+    transform: scale(0.98);
+}
+
+.dice .face {
+    font-size: 48px;
+    font-weight: 600
+}
+
+.dice.rolling {
+    animation: roll 0.9s linear infinite;
+}
+
+@keyframes roll {
+    from {
+        transform: rotateX(0) rotateY(0)
+    }
+
+    to {
+        transform: rotateX(360deg) rotateY(360deg)
+    }
+}
+
+.controls {
+    display: flex;
+    gap: 20px;
+    margin-top: 12px;
+}
+
+.controls button {
+    margin-left: 8px
+}
+
+.message {
+    margin-top: 14px;
+    font-size: 18px
+}
+
+.bottom-panel {
+    margin-top: 28px;
+    width: 100%;
+}
+
+.numbers {
+    font-family: 'HSR', sans-serif;
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+    flex-wrap: wrap
+}
+
+.num {
+    width: 40px;
+    padding: 8px;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.06);
+    color: inherit;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px
+}
+
+.num {
+    position: relative;
+}
+
+.v-marker {
+    position: absolute;
+    top: -20px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-weight: 800;
+    font-size: 14px;
+    pointer-events: none;
+    line-height: 1;
+}
+
+.num .num-label {
+    font-weight: 700
+}
+
+.hp-input {
+    width: 60px
+}
+
+.post-modal {
+    position: block;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.post-card {
+    background: #ffffff;
+    color: #111;
+    padding: 18px;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3)
+}
+
+.grid-bg {
+    position: fixed;
+    inset: -20%;
+    width: 140vw;
+    height: 140vh;
+    background-size: 120px 120px;
+    opacity: 0.12;
+    transform: rotate(-30deg);
+    background-image: linear-gradient(90deg, rgba(0, 0, 0, 0.06) 1px, transparent 1px);
+    animation: slide 8s linear infinite;
+    pointer-events: none;
+    z-index: 0;
+}
+
+@keyframes slide {
+    from {
+        background-position: 0 0
+    }
+
+    to {
+        background-position: 800px 800px
+    }
+}
+
+.game-root.ended {
+    background: #0b1020;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center
+}
+
+.final {
+    text-align: center
+}
+
+/* die face attribute badge */
+.face-attr {
+    position: absolute;
+    bottom: 6px;
+    right: 10px;
+    padding: 4px 8px;
+    border-radius: 8px;
+    color: #fff;
+    font-size: 12px;
+    opacity: 0.95;
+}
+
+.dice {
+    position: relative
+}
+
+.point-modal,
+.post-modal {
+    z-index: 40
+}
+
+.page-bg {
+    position: fixed;
+    inset: 0;
+    z-index: -5;
+    pointer-events: none;
+    opacity: 0;
+    background: linear-gradient(135deg, #fef3c7 0%, #d8b4fe 100%);
+    transition: background-color 1s ease, color 0.25s ease;
+}
+
+.result-modal,
+.point-modal,
+.post-modal {
+    z-index: 40
+}
+
+.result-card,
+.post-card {
+    font-family: 'HSR', sans-serif;
+    background: #ffffff;
+    color: #111;
+    padding: 18px;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+.result-actions {
+    font-family: 'HSR', sans-serif;
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    margin-top: 12px
+}
+
+/* pip visuals */
+.pips {
+    width: 64%;
+    height: 64%;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    gap: 8px
+}
+
+.pip-slot {
+    display: flex;
+    align-items: center;
+    justify-content: center
+}
+
+.pip {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: currentColor;
+    opacity: 0;
+    transition: opacity 0.12s ease
+}
+
+.pip.show {
+    opacity: 1
+}
+
+.rolling-face {
+    font-size: 32px;
+}
+
+/* small dice used in the background grid */
+.dice.small {
+    width: 56px;
+    height: 56px;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.06);
+    display: grid;
+    place-items: center;
+    color: rgba(0, 0, 0, 0.85)
+}
+
+.dice.small .pips {
+    width: 78%;
+    height: 78%;
+    gap: 6px
+}
+
+.dice.small .pip {
+    width: 8px;
+    height: 8px
+}
+
+/* dice grid background container */
+.dice-grid-wrap {
+    position: fixed;
+    inset: -20%;
+    overflow: hidden;
+    pointer-events: none;
+    z-index: -4
+}
+
+.dice-grid {
+    display: grid;
+    opacity: 0.2;
+    gap: 8px;
+    width: max-content * 2;
+    height: max-content * 2;
+    transform-origin: 0 0;
+    animation: grid-slide 60s linear infinite
+}
+
+.grid-tile {
+    display: flex;
+    align-items: center;
+    justify-content: center
+}
+
+@keyframes grid-slide {
+    0% {
+        transform: translate(-10%, 10%) rotate(-5deg)
+    }
+
+    100% {
+        transform: translate(10%, -10%) rotate(-5deg)
+    }
+}
+
+/* when modal open, disable dice interactions */
+.modal-open .dice {
+    pointer-events: none;
+    opacity: 0.9
+}
+
+/* point modal reveal lines */
+.point-card .line {
+    opacity: 0;
+    transition: opacity 0.35s ease
+}
+
+.point-card .line.show {
+    opacity: 1
+}
+
+.point-modal.closing .point-card {
+    opacity: 0;
+    transform: scale(0.98);
+    transition: opacity 0.25s ease, transform 0.25s ease
+}
+
+/* health bar */
+.health-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    justify-content: center;
+    width: 100%;
+    margin-bottom: 12px
+}
+
+.heart {
+    font-family: 'HSR', sans-serif;
+    font-size: 80px;
+    margin-right: -55px;
+    z-index: 1;
+    color: #f97316;
+    transform: translate(0%, -10%) rotate(-5deg);
+    transition: transform 0.25s ease
+}
+
+.lives-text {
+    font-size: 20px;
+    font-weight: 700;
+    transform: translate(75%, -150%) rotate(5deg)
+}
+
+.hp-bar {
+    width: 420px;
+    height: 18px;
+    background: rgba(0, 0, 0, 0.12);
+    border-radius: 999px;
+    overflow: hidden
+}
+
+.hp-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #f87171, #f97316);
+    width: 100%;
+    transition: width 0.25s linear
+}
+
+.point-modal {
+    font-family: 'HSR', sans-serif;
+    position: block;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.point-card {
+    background: rgba(255, 255, 255, 0.98);
+    color: #111;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
+    max-width: 360px;
+    text-align: center
+}
+
+.point-actions {
+    font-family: 'HSR', sans-serif;
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+    margin-top: 12px
+}
+
+.post-actions>button {
+    font-family: 'HSR', sans-serif;
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+    margin-top: 12px
+}
+
+
+.face-config {
+    margin-top: 16px
+}
+
+.faces {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    justify-content: center
+}
+
+.face-config-item {
+    width: 88px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    align-items: center
+}
+
+.label-input {
+    width: 100%;
+    box-sizing: border-box
+}
+
+.num .label-input {
+    width: 100%
+}
+
+button:disabled {
+    opacity: 0.45;
+    cursor: not-allowed
+}
