@@ -72,7 +72,7 @@ function Dice({
                 <div className="rolling-face">…</div>
             ) : value === 1 ? (
                 <div className="yoshie-wrap" aria-hidden>
-                    <img src="/YoshieTrace.svg" alt="Yoshie" className="yoshie-face" />
+                    <img src="YoshieTrace.svg" alt="Yoshie" className="yoshie-face" />
                 </div>
             ) : (
                 <div className="pips" aria-hidden>
