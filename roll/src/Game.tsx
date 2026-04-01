@@ -109,11 +109,11 @@ export default function Game() {
     const [comeoutLosingCount, setComeoutLosingCount] = useState(0)
 
     // scoreboard digits and animation state
-    const [displayDigits, setDisplayDigits] = useState<string[]>(String(score).padStart(8, '0').split(''))
+    const [displayDigits, setDisplayDigits] = useState<string[]>(String(score).padStart(5, '0').split(''))
     const prevScoreRef = useRef<number>(score)
     const digitTimeoutsRef = useRef<number[]>([])
     const pendingTargetDigitsRef = useRef<string[] | null>(null)
-    const [animatingDigits, setAnimatingDigits] = useState<boolean[]>(Array(8).fill(false))
+    const [animatingDigits, setAnimatingDigits] = useState<boolean[]>(Array(5).fill(false))
 
     function comeoutDamageForCount(count: number) {
         if (count <= 1) return 0
@@ -130,6 +130,8 @@ export default function Game() {
         if (rolling || resultModal.visible || awaitingPost) return
 
         setRollCount((r) => r + 1)
+        const audio = new Audio('audio/Dice.mp3');
+        audio.play();
 
         // decide pre-adjust and consume only if available
         let usedPre: 0 | 1 | -1 = pendingPreAdjust
@@ -171,8 +173,9 @@ export default function Game() {
 
             if (phase === 'comeout') {
                 if (losing.includes(adjusted)) {
-                    const losingStr = losing.join(' or ')
-                    setResultModal({ visible: true, text: `Rolled a ${losingStr} — roll again.`, allowEnd: false })
+                    setResultModal({ visible: true, text: `Roll again.`, allowEnd: false })
+                    setScore(score + 1)
+                    setHp(hp - comeoutDamageForCount(comeoutLosingCount))
                     setComeoutLosingCount(comeoutLosingCount + 1)
                     setShowPointModal(true)
                     setRolling(false)
@@ -180,9 +183,11 @@ export default function Game() {
                     setPoint(adjusted)
                     // if this was the very first roll of the game, mark zero-cycle
                     setZeroCycleActive(true)
+                    setRollCount(0)
                     setPhase('point')
                     setShowPointModal(true)
                     setRolling(false)
+                    new Audio('audio/Swap.mp3').play()
                 }
             } else if (phase === 'point') {
                 // allow post-adjust before final evaluation
@@ -225,6 +230,8 @@ export default function Game() {
         let nextLives = lives
         let deltaScore = 0
         let finalMsg = ''
+        let finalMsg2 = ''
+        let finalMsg3 = ''
 
         if (value === point) {
             deltaScore = 100
@@ -233,21 +240,23 @@ export default function Game() {
                 deltaScore += 100
                 setZeroCycleActive(false)
                 finalMsg = `You rolled the Point (${value}) — +${deltaScore} points! (Zero-Cycle bonus!)`
+                new Audio('audio/Airhorn.mp3').play();
             } else {
                 finalMsg = `You rolled the Point (${value}) — +100 points!`
+                new Audio('audio/Tada.mp3').play();
             }
         } else if (losing.includes(value)) {
             nextLives = Math.max(0, lives - 1)
-            finalMsg = `Rolled a ${value} — lost 1 life.`
+            finalMsg = `Rolled a ${value} \nlost 1 life.`
+            new Audio('audio/Buzzer.mp3').play();
         } else {
-            deltaScore = 10
+            deltaScore = 10 // MAKE A FUNCTION CALL FOR THIS
             finalMsg = `Rolled ${value} — +10 points.`
+            new Audio('audio/Cash.mp3').play();
             setZeroCycleActive(false)
+            setRollCount(rollCount + 1)
             // continue the point cycle (do not end the point when neither the point nor losing values are rolled)
         }
-
-        // if this roll finished the cycle (point or losing value), increment or end
-        const finishedCycle = value === point || losing.includes(value)
 
         if (deltaScore) setScore((s) => s + deltaScore)
         if (dmg) setHp(nextHp)
@@ -302,6 +311,7 @@ export default function Game() {
             setPhase('comeout')
             setPoint(null)
             setShowPointModal(false)
+            new Audio('audio/Swap.mp3').play();
             // reset comeout-losing tracking for the new comeout
             setComeoutLosingCount(0)
             setLastRoll(null)
@@ -314,25 +324,6 @@ export default function Game() {
         setResultModal({ visible: false, text: '', allowEnd: false })
         setShowPointModal(false)
         setPhase('ended')
-    }
-
-    const resetGame = () => {
-        setScore(0)
-        setLives(3)
-        setHp(100)
-        setPoint(null)
-        setPhase('comeout')
-        setAllCyclesCompleted(false)
-        setPrePlus(3)
-        setPreMinus(3)
-        setPostPlus(3)
-        setPostMinus(3)
-        setResultModal({ visible: false, text: '', allowEnd: false })
-        setRawResult(null)
-        setFinalResult(null)
-        setFaceAttrMap({})
-        setNumAttrMap({})
-        setHpDamageMap({})
     }
 
     const setHpDamage = (n: number, value: number) => {
@@ -367,7 +358,7 @@ export default function Game() {
     const NUMBERS = Array.from({ length: maxSum - minSum + 1 }, (_, i) => i + minSum)
 
     // format score as 8 digits with muted leading zeros
-    const formattedScore = String(score).padStart(8, '0')
+    const formattedScore = String(score).padStart(5, '0')
     const firstNonZero = formattedScore.search(/[^0]/) === -1 ? formattedScore.length : formattedScore.search(/[^0]/)
 
     // (end-screen rendering moved into the main return to avoid early-return hook mismatch)
@@ -379,13 +370,15 @@ export default function Game() {
         let t: any = null
         if (grade === 'SS') {
             // show message then redirect after 3s
+            new Audio('audio/Tada.mp3').play();
             t = setTimeout(() => {
                 try { window.location.href = 'https://www.youtube.com/watch?v=dQw4w9WgXcQ' } catch (e) { try { window.open('https://www.youtube.com/watch?v=dQw4w9WgXcQ', '_blank') } catch {} }
             }, 3000)
         } else if (grade === 'F') {
+            new Audio('audio/Wompwomp.mp3').play();
             t = setTimeout(() => {
                 try { window.location.href = 'https://www.youtube.com/watch?v=b1cTSxu8O8c' } catch (e) { try { window.open('https://www.youtube.com/watch?v=b1cTSxu8O8c', '_blank') } catch {} }
-            }, 3000)
+            }, 5000)
         }
         return () => { if (t) clearTimeout(t) }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -405,8 +398,8 @@ export default function Game() {
         const prev = prevScoreRef.current
         if (prev === score) return
 
-        const prevDigits = String(prev).padStart(8, '0').split('')
-        const targetDigits = String(score).padStart(8, '0').split('')
+        const prevDigits = String(prev).padStart(5, '0').split('')
+        const targetDigits = String(score).padStart(5, '0').split('')
 
         // clear any running timers
         digitTimeoutsRef.current.forEach((id) => clearTimeout(id))
@@ -463,7 +456,7 @@ export default function Game() {
             {phase === 'ended' ? (
                 <div className="final">
                     <div className="final-scoreboard">
-                        {String(score).padStart(8, '0').split('').map((d, i) => (
+                        {String(score).padStart(5, '0').split('').map((d, i) => (
                             <span key={i} className={"digit " + (i < firstNonZero ? 'muted' : '')}>{d}</span>
                         ))}
                         <span className="score-icon">💰</span>
@@ -624,7 +617,7 @@ export default function Game() {
                 </section>
 
 
-                
+
 
                 {/* dice-grid background component */}
                 {phase === 'point' && <DiceGrid />}
@@ -649,6 +642,22 @@ export default function Game() {
                     </main>
                 </>
             )}
+            {cycle === 1 && phase !== 'ended' && <div className="intro">
+                You have 6 cycles to make 7,000 budget. <br/>
+                Clear the challenge, and roll into Yoshie's treasure trove. <br/>
+                Run out of HP, and face the consequences of memery.
+            </div>
+            }
+            {cycle === 3 && phase !== 'ended' && <div className="intro">
+                Watch out, here comes another dice into play.
+            </div>
+            }
+            {cycle === 5 && phase !== 'ended' && <div className="intro">
+                One more dice! Hope you're almost there!
+            </div>
+            }
+
+
         </div>
     )
 }

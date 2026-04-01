@@ -271,6 +271,10 @@ h1 {
     margin-top: 12px
 }
 
+button {
+    font-family: inherit;
+}
+
 /* pip visuals */
 .pips {
     width: 64%;
@@ -525,6 +529,12 @@ h1 {
     margin: 6px;
 }
 
+.post-actions {
+    display: flex;
+    justify-content: center; /* Centers horizontally */
+    align-items: center;     /* Centers vertically */
+}
+
 /* End-of-game meter and final scoreboard */
 .meter {
     margin: 18px 0 12px;
@@ -585,12 +595,14 @@ h1 {
 }
 
 .point-card {
+    font-family: 'HSR', sans-serif;
     background: rgba(255, 255, 255, 0.98);
     color: #111;
     padding: 20px;
     border-radius: 12px;
     box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
-    max-width: 360px;
+    width: 100%;
+    max-width: 700px;
     text-align: center
 }
 
@@ -642,4 +654,12 @@ h1 {
 button:disabled {
     opacity: 0.45;
     cursor: not-allowed
+}
+
+.intro {
+    font-family: 'HSR', sans-serif;
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+    margin-top: 12px
 }

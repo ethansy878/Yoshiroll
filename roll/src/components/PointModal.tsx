@@ -14,7 +14,7 @@ export default function PointModal({ point, result = null, onResultContinue, onR
     const lines = [
         `Roll a ${point}, complete the cycle.`,
         'Roll a 7, lose a life.',
-        'Roll anything else, gain points.',
+        'Roll anything else, gain budget.',
     ]
 
     const [revealed, setRevealed] = useState(0)
