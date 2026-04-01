@@ -635,22 +635,6 @@ export default function Game() {
                 </>
             )}
 
-            {/* <header className="top-bar">
-                <div className="status">
-                    <strong>Score:</strong> {score} <strong>Lives:</strong> {lives} <strong>HP:</strong>{' '}
-                    {hp}
-                </div>
-                <div className="powerups">
-                    <div>Pre +: {prePlus}</div>
-                    <div>Pre -: {preMinus}</div>
-                    <div>Post +: {postPlus}</div>
-                    <div>Post -: {postMinus}</div>
-                </div>
-                <div>
-                    <button onClick={() => { if (window.confirm('End game?')) setPhase('ended') }}>End Game</button>
-                </div>
-            </header> */}
-
             <main className={"play-area" + ((resultModal.visible || awaitingPost) ? ' modal-open' : '')}>
                 <h1 className="main-title">{phase === 'comeout' ? 'Yoshiroll.' : `Cycle ${cycle}`}</h1> <br/>
 
@@ -669,9 +653,9 @@ export default function Game() {
                     <div className="pre-controls">
                         <label className="pre-label">Stack Pre-Adjusts</label>
                         <div className="post-actions">
-                            <button onClick={() => setPendingPreAdjust((p) => Math.min(p + 1, prePlus))} disabled={prePlus <= 0}>+1 (x{prePlus})</button>
                             <button onClick={() => setPendingPreAdjust((p) => Math.max(p - 1, -preMinus))} disabled={preMinus <= 0}>-1 (x{preMinus})</button>
                             <button onClick={() => setPendingPreAdjust(0)}>Clear</button>
+                            <button onClick={() => setPendingPreAdjust((p) => Math.min(p + 1, prePlus))} disabled={prePlus <= 0}>+1 (x{prePlus})</button>
                         </div>
                     </div>
                 </div> }
@@ -779,8 +763,6 @@ export default function Game() {
                 </section>
 
 
-
-
                 {/* dice-grid background component */}
                 {phase === 'point' && <DiceGrid />}
 
@@ -803,8 +785,8 @@ export default function Game() {
                     })}
                     <span className="score-icon">💰</span>
                 </div>
-                
-                    </main>
+
+                </main>
                 </>
             )}
             {score > 99999 && <div className="intro">
@@ -814,8 +796,8 @@ export default function Game() {
             {cycle === 1 && phase !== 'ended' && <div className="intro">
                 You have 6 cycles to make 10,000 budget. <br/>
                 Clear the challenge, and get blessed by Yoshie. <br/>
-                Lose your 3 lives, and get memed. <br/>
-                (Volume Warning: Turn your sound DOWN)
+                Poverty or death? Get memed. <br/>
+                (VOLUME WARNING: Turn your sound DOWN)
             </div>
             }
             {cycle >= 2 && phase === 'comeout' && <div className="intro">
@@ -837,8 +819,6 @@ export default function Game() {
                 One more dice! Good luck!
             </div>
             }
-
-
         </div>
     )
 }
