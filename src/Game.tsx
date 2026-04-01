@@ -449,7 +449,7 @@ export default function Game() {
         setPreMinus((p) => p + 1)
     }
     const buyPostAdd = () => {
-        const cost = 100 * Math.pow(2, postAddBought)
+        const cost = 50 * Math.pow(2, postAddBought)
         if (score < cost) return
         setScore((s) => s - cost)
         new Audio('audio/Buy.mp3').play()
@@ -457,7 +457,7 @@ export default function Game() {
         setPostPlus((p) => p + 1)
     }
     const buyPostSub = () => {
-        const cost = 100 * Math.pow(2, postSubBought)
+        const cost = 50 * Math.pow(2, postSubBought)
         if (score < cost) return
         setScore((s) => s - cost)
         new Audio('audio/Buy.mp3').play()
@@ -486,8 +486,8 @@ export default function Game() {
 
     const preAddCost = 5 * Math.pow(2, preAddBought)
     const preSubCost = 5 * Math.pow(2, preSubBought)
-    const postAddCost = 100 * Math.pow(2, postAddBought)
-    const postSubCost = 100 * Math.pow(2, postSubBought)
+    const postAddCost = 50 * Math.pow(2, postAddBought)
+    const postSubCost = 50 * Math.pow(2, postSubBought)
 
     // format score as 8 digits with muted leading zeros
     const formattedScore = String(score).padStart(5, '0')
@@ -510,7 +510,7 @@ export default function Game() {
         } else {
             new Audio('audio/Wompwomp.mp3').play();
             t = setTimeout(() => {
-                try { window.location.href = 'https://www.youtube.com/watch?v=dQw4w9WgXcQ' } catch (e) { try { window.open('https://www.youtube.com/watch?v=dQw4w9WgXcQ', '_blank') } catch {} }
+                try { window.location.href = 'https://www.youtube.com/watch?v=xvFZjo5PgG0' } catch (e) { try { window.open('https://www.youtube.com/watch?v=xvFZjo5PgG0', '_blank') } catch {} }
             }, 5000)
         }
         return () => { if (t) clearTimeout(t) }
@@ -652,7 +652,7 @@ export default function Game() {
             {phase === 'point' && <div className="pre-adjust-display">{pendingPreAdjust >= 0 ? `+${pendingPreAdjust}` : pendingPreAdjust}</div>}
             {phase === 'point' && !rolling && !awaitingPost && !resultModal.visible && <div className="controls">
                     <div className="pre-controls">
-                        <label className="pre-label">Stack Pre-Adjusts</label>
+                        <label className="pre-label">Stack Pre-Adjusts?</label>
                         <div className="post-actions">
                             <button onClick={() => setPendingPreAdjust((p) => Math.max(p - 1, -preMinus))} disabled={preMinus <= 0}>-1 (x{preMinus} available)</button>
                             <button onClick={() => setPendingPreAdjust(0)}>Clear</button>
@@ -790,13 +790,13 @@ export default function Game() {
                 </main>
                 </>
             )}
-            {score > 99999 && <div className="intro">
+            {score > 99999 && phase !== 'ended' && <div className="intro">
                 Wow! You have over 99,999 budget! The scoreboard may not function as expected! <br/>
             </div>
             }
             {cycle === 1 && phase !== 'ended' && <div className="intro">
                 You have 6 cycles to make 10,000 budget. <br/>
-                Clear the challenge, and get blessed by Yoshie. <br/>
+                Clear the challenge? Blessed by Yoshie. <br/>
                 Poverty or death? Get memed. <br/>
                 (VOLUME WARNING...)
             </div>
@@ -818,6 +818,10 @@ export default function Game() {
             }
             {cycle === 5 && phase !== 'ended' && <div className="intro">
                 One more dice! Good luck!
+            </div>
+            }
+            {cycle === 6 && phase !== 'ended' && <div className="intro">
+                This is the last cycle!
             </div>
             }
         </div>
