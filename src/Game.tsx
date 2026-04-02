@@ -625,7 +625,7 @@ export default function Game() {
                     <h3 className="grade-letter">Rating: {computeGrade()}</h3>
                     {computeGrade() !== 'S' && computeGrade() !== 'X' && <div className="intro">Good job, but not enough funds for Yoshie. Teleporting in 5 seconds...</div>}
                     {computeGrade() === 'X' && <div className="intro">YOU DIED... Teleporting in 5 seconds...</div>}
-                    {computeGrade() === 'S' && <div className="intro">YOU CLEARED THE CHALLENGE! Teleporting in 5 seconds...</div>}
+                    {computeGrade() === 'S' && <div className="intro">YOU CLEARED THE CHALLENGE! You will NOT get rickrolled!!! Teleporting in 5 seconds...</div>}
                 </div>
             ) : (
                 <>
